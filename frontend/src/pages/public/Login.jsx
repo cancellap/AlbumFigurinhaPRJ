@@ -1,5 +1,5 @@
-import "../styles/login.css";
-import logo from "../assets/Logo.png";
+import "../../styles/login.css";
+import logo from "../../assets/Logo.png";
 
 export default function Login() {
 

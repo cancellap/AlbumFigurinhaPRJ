@@ -1,32 +1,41 @@
-import { useState } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
 
-import Splash from "./pages/splash";
-import Login from "./pages/login";
-import About from "./pages/about";
+import Splash from "./pages/public/Splash";
+import Login from "./pages/public/Login";
+import About from "./pages/public/About";
 
 import Footer from "./components/Footer";
 
 function App() {
-  const [pagina, setPagina] = useState("splash");
-
   return (
-    <>
-      {pagina === "splash" && (
-        <Splash
-          onFinish={() => setPagina("login")}
+    <BrowserRouter>
+
+      <Routes>
+
+        <Route
+          path="/"
+          element={<Splash />}
         />
-      )}
 
-      {pagina === "login" && (
-        <Login />
-      )}
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-      {pagina === "about" && (
-        <About />
-      )}
+        <Route
+          path="/about"
+          element={<About />}
+        />
+
+      </Routes>
 
       <Footer />
-    </>
+
+    </BrowserRouter>
   );
 }
 
