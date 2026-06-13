@@ -1,0 +1,99 @@
+.page{
+    padding:30px;
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:25px;
+}
+
+.page-header h1{
+    color:#041C5A;
+}
+
+.page-header button{
+    background:#041C5A;
+    color:white;
+
+    border:none;
+
+    padding:12px 18px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+.tabela{
+    width:100%;
+
+    border-collapse:collapse;
+
+    background:white;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,.15);
+}
+
+.tabela th{
+    background:#041C5A;
+    color:white;
+
+    padding:15px;
+}
+
+.tabela td{
+    padding:15px;
+
+    border-bottom:1px solid #ddd;
+}
+
+.tabela button{
+    margin-right:10px;
+
+    border:none;
+
+    padding:8px 12px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+}
+
+.form{
+    display:flex;
+    flex-direction:column;
+
+    gap:15px;
+
+    max-width:500px;
+}
+
+.form input,
+.form select{
+    padding:12px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+}
+
+.form button{
+    background:#041C5A;
+    color:white;
+
+    border:none;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}

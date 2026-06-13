@@ -1,22 +1,35 @@
 import "../../styles/login.css";
 import logo from "../../assets/Logo.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
 
+    const navigate = useNavigate();
+
     function handleSubmit(e) {
+
         e.preventDefault();
 
         const usuario =
             e.target.usuario.value;
 
-        const senha =
-            e.target.senha.value;
+        localStorage.setItem(
+            "usuario",
+            usuario
+        );
 
-        console.log(usuario);
-        console.log(senha);
+        if (usuario === "admin") {
+            navigate("/admin/usuarios");
+            return;
+        }
 
-        alert("Login realizado com sucesso!");
-    }  
+        if (usuario === "autor") {
+            navigate("/autor/album");
+            return;
+        }
+
+        navigate("/colecionador/album");
+    }
 
     return (
         <div className="container">
@@ -66,13 +79,8 @@ export default function Login() {
 
                 </form>
 
-                <a href="#" className="link">
-                    Esqueci minha senha
-                </a>
-
             </div>
 
         </div>
-
     );
 }

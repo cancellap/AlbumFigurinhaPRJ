@@ -1,0 +1,81 @@
+.page{
+    padding:30px;
+}
+
+.page h1{
+    color:#041C5A;
+    margin-bottom:25px;
+}
+
+.cards{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fill,minmax(200px,1fr));
+
+    gap:20px;
+}
+
+.card-figurinha{
+    background:white;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    text-align:center;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,.15);
+}
+
+.card-detalhe{
+    background:white;
+
+    max-width:400px;
+
+    margin:auto;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.15);
+}
+
+.card-detalhe img{
+    width:100%;
+    border-radius:10px;
+}
+
+.form{
+    display:flex;
+    flex-direction:column;
+
+    gap:15px;
+
+    max-width:500px;
+}
+
+.form input,
+.form select{
+    padding:12px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+}
+
+.form button{
+    background:#041C5A;
+    color:white;
+
+    border:none;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
