@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../styles/footer.css";
 
 export default function Footer() {
@@ -8,9 +9,9 @@ export default function Footer() {
 
         <span>|</span>
 
-        <a href="#">
+        <Link to="/about">
           Sobre
-        </a>
+        </Link>
 
         <span>|</span>
 
