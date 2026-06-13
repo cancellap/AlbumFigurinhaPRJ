@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>FiguMania</title>
+    <link rel="stylesheet" href="../styles/splash.css">
+</head>
+<body>
+
+<div class="splash">
+
+    <img
+        src="../assets/Logo.png"
+        alt="FiguMania"
+        class="logo"
+    >
+
+    <p class="texto">
+        Carregando coleção... <span id="percentual">0%</span>
+    </p>
+
+    <div class="barra">
+        <div class="progresso"></div>
+    </div>
+
+    <span class="versao">
+        Versão 1.0
+    </span>
+
+</div>
+
+<script>
+const percentual = document.getElementById("percentual");
+let valor = 0;
+
+const intervalo = setInterval(() => {
+    valor++;
+    percentual.textContent = valor + "%";
+
+    if (valor >= 100) {
+        clearInterval(intervalo);
+        window.location.href = "login.html";
+    }
+}, 30);
+</script>
+
+</body>
+</html>
