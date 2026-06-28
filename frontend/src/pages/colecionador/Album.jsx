@@ -149,14 +149,7 @@ export default function Album() {
 
                             <button
                                 onClick={() =>
-                                    navigate(
-                                        "/colecionador/figurinha",
-                                        {
-                                            state: {
-                                                id: item.stickerId
-                                            }
-                                        }
-                                    )
+                                    navigate(`/colecionador/figurinha/${item.stickerId}`)
                                 }
                             >
                                 Detalhes

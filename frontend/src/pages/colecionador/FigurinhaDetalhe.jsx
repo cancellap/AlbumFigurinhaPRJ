@@ -1,7 +1,7 @@
 import "../../styles/album.css";
 
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import {
     buscarFigurinha,
@@ -10,9 +10,7 @@ import {
 
 export default function FigurinhaDetalhe() {
 
-    const location = useLocation();
-
-    const id = location.state?.id;
+    const { id } = useParams();
 
     const [figurinha, setFigurinha] = useState(null);
     const [erro, setErro] = useState("");
