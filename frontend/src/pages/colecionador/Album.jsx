@@ -3,38 +3,63 @@ import "../../styles/album.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { fotoFigurinha } from "../../services/sticker.service";
+
 import {
-    listarFigurinhas,
-    fotoFigurinha
-} from "../../services/sticker.service";
+    listarMinhaColecao,
+    removerFigurinha
+} from "../../services/collection.service";
 
 export default function Album() {
 
     const navigate = useNavigate();
 
-    const [figurinhas, setFigurinhas] = useState([]);
+    const [colecao, setColecao] = useState([]);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
 
     useEffect(() => {
-        carregarFigurinhas();
+
+        carregarColecao();
+
     }, []);
 
-    async function carregarFigurinhas() {
+    async function carregarColecao() {
 
         try {
 
-            const dados = await listarFigurinhas();
+            const dados =
+                await listarMinhaColecao();
 
-            setFigurinhas(dados);
+            setColecao(dados);
 
         } catch {
 
-            setErro("Erro ao carregar álbum.");
+            setErro("Erro ao carregar coleção.");
 
         } finally {
 
             setCarregando(false);
+
+        }
+
+    }
+
+    async function remover(stickerId) {
+
+        if (!window.confirm("Remover figurinha da coleção?")) {
+            return;
+        }
+
+        try {
+
+            await removerFigurinha(stickerId);
+
+            carregarColecao();
+
+        } catch (e) {
+
+            alert(e.message);
 
         }
 
@@ -62,10 +87,12 @@ export default function Album() {
 
                 <div>
 
-                    <h1>Meu Álbum de Figurinhas</h1>
+                    <h1>Meu Álbum</h1>
 
                     <div className="page-sub">
-                        Clique em uma figurinha para visualizar os detalhes.
+
+                        Minha coleção de figurinhas.
+
                     </div>
 
                 </div>
@@ -75,7 +102,7 @@ export default function Album() {
                         navigate("/colecionador/nova-figurinha")
                     }
                 >
-                    Nova Figurinha
+                    Adicionar Figurinha
                 </button>
 
             </div>
@@ -88,45 +115,62 @@ export default function Album() {
 
             <div className="cards">
 
-                {figurinhas.map(figurinha => (
+                {colecao.map(item => (
 
                     <div
-                        key={figurinha.id}
+                        key={item.stickerId}
                         className="card-figurinha"
-                        onDoubleClick={() =>
-                            navigate(
-                                "/colecionador/figurinha",
-                                {
-                                    state: {
-                                        id: figurinha.id
-                                    }
-                                }
-                            )
-                        }
                     >
 
                         <img
-                            src={fotoFigurinha(figurinha.id)}
-                            alt={figurinha.nome}
+                            src={fotoFigurinha(item.stickerId)}
+                            alt={item.nome}
                         />
 
                         <h3>
 
-                            #{figurinha.numero}
+                            #{item.numero}
 
                         </h3>
 
                         <p>
 
-                            {figurinha.nome}
+                            {item.nome}
 
                         </p>
 
                         <small>
 
-                            Página {figurinha.pagina}
+                            Página {item.pagina}
 
                         </small>
+
+                        <div className="acoes">
+
+                            <button
+                                onClick={() =>
+                                    navigate(
+                                        "/colecionador/figurinha",
+                                        {
+                                            state: {
+                                                id: item.stickerId
+                                            }
+                                        }
+                                    )
+                                }
+                            >
+                                Detalhes
+                            </button>
+
+                            <button
+                                onClick={() =>
+                                    remover(item.stickerId)
+                                }
+                            >
+                                Remover
+                            </button>
+
+                        </div>
 
                     </div>
 
