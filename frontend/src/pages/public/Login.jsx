@@ -4,62 +4,66 @@ import logo from "../../assets/Logo.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-import { usuarios } from "../../data/usuarios";
+import { login, salvarSessao } from "../../services/auth.service";
 
 export default function Login() {
 
     const navigate = useNavigate();
 
     const [erro, setErro] = useState("");
+    const [carregando, setCarregando] = useState(false);
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
 
         e.preventDefault();
 
         setErro("");
+        setCarregando(true);
 
-        const usuarioDigitado =
-            e.target.usuario.value;
+        const nome =
+            e.target.usuario.value.trim();
 
-        const senhaDigitada =
+        const senha =
             e.target.senha.value;
 
-        const usuario = usuarios.find(
-            u =>
-                u.usuario === usuarioDigitado &&
-                u.senha === senhaDigitada
-        );
+        try {
 
-        if (!usuario) {
+            const usuario =
+                await login(nome, senha);
+
+            salvarSessao(usuario);
+
+            switch (usuario.perfil) {
+
+                case "ADMIN":
+                    navigate("/admin/dashboard");
+                    break;
+
+                case "AUTOR":
+                    navigate("/autor/dashboard");
+                    break;
+
+                case "COLECIONADOR":
+                    navigate("/colecionador/dashboard");
+                    break;
+
+                default:
+                    setErro("Perfil inválido.");
+                    break;
+            }
+
+        } catch (error) {
 
             setErro(
-                "Usuário ou senha inválidos."
+                error.message || "Erro ao realizar login."
             );
 
-            return;
+        } finally {
+
+            setCarregando(false);
+
         }
 
-        localStorage.setItem(
-            "usuario",
-            usuario.nome
-        );
-
-        localStorage.setItem(
-            "perfil",
-            usuario.perfil
-        );
-
-        if (usuario.perfil === "admin") {
-            navigate("/admin/dashboard");
-            return;
-        }
-
-        if (usuario.perfil === "autor") {
-            navigate("/autor/dashboard");
-            return;
-        }
-
-        navigate("/colecionador/dashboard");
     }
 
     return (
@@ -127,39 +131,23 @@ export default function Login() {
                     <button
                         type="submit"
                         className="login-btn"
+                        disabled={carregando}
                     >
-                        Entrar
+
+                        {
+                            carregando
+                                ? "Entrando..."
+                                : "Entrar"
+                        }
+
                     </button>
 
                 </form>
-
-                <div className="login-link">
-
-                    Usuários de teste:
-
-                    <br />
-
-                    <span>
-                        admin / 123
-                    </span>
-
-                    {" • "}
-
-                    <span>
-                        autor / 123
-                    </span>
-
-                    {" • "}
-
-                    <span>
-                        colecionador / 123
-                    </span>
-
-                </div>
 
             </div>
 
         </div>
 
     );
+
 }
