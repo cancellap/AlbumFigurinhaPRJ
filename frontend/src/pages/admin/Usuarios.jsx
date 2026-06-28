@@ -1,47 +1,118 @@
 import "../../styles/admin.css";
 
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import {
+    listarUsuarios,
+    excluirUsuario
+} from "../../services/user.service";
+
 export default function Usuarios() {
 
-    const usuarios = [
-        {
-            id: 1,
-            nome: "Arthur Maia Rangel",
-            perfil: "Administrador"
-        },
-        {
-            id: 2,
-            nome: "Pedro Cancella Oliveira",
-            perfil: "Autor"
-        },
-        {
-            id: 3,
-            nome: "Natan Mauricio Santos",
-            perfil: "Colecionador"
+    const navigate = useNavigate();
+
+    const [usuarios, setUsuarios] = useState([]);
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState("");
+
+    async function carregarUsuarios() {
+
+        try {
+
+            const dados =
+                await listarUsuarios();
+
+            setUsuarios(dados);
+
+        } catch (e) {
+
+            setErro("Erro ao carregar usuários.");
+
+        } finally {
+
+            setCarregando(false);
+
         }
-    ];
+
+    }
+
+    useEffect(() => {
+
+        carregarUsuarios();
+
+    }, []);
+
+    async function remover(id) {
+
+        if (!confirm("Deseja realmente excluir este usuário?")) {
+            return;
+        }
+
+        try {
+
+            await excluirUsuario(id);
+
+            carregarUsuarios();
+
+        } catch {
+
+            alert("Erro ao excluir usuário.");
+
+        }
+
+    }
+
+    if (carregando) {
+
+        return (
+            <div className="page">
+                <h2>Carregando...</h2>
+            </div>
+        );
+
+    }
 
     return (
+
         <div className="page">
 
             <div className="page-header">
 
                 <h1>Usuários</h1>
 
-                <button>
+                <button
+                    onClick={() => navigate("/admin/usuarios/novo")}
+                >
                     Novo Usuário
                 </button>
 
             </div>
 
+            {erro &&
+
+                <p>
+                    {erro}
+                </p>
+
+            }
+
             <table className="tabela">
 
                 <thead>
+
                     <tr>
+
                         <th>ID</th>
+
                         <th>Nome</th>
+
                         <th>Perfil</th>
+
                         <th>Ações</th>
+
                     </tr>
+
                 </thead>
 
                 <tbody>
@@ -58,11 +129,19 @@ export default function Usuarios() {
 
                             <td>
 
-                                <button>
+                                <button
+                                    onClick={() =>
+                                        navigate(`/admin/usuarios/${usuario.id}`)
+                                    }
+                                >
                                     Editar
                                 </button>
 
-                                <button>
+                                <button
+                                    onClick={() =>
+                                        remover(usuario.id)
+                                    }
+                                >
                                     Excluir
                                 </button>
 
@@ -77,5 +156,7 @@ export default function Usuarios() {
             </table>
 
         </div>
+
     );
+
 }
