@@ -82,7 +82,7 @@ export default function Usuarios() {
                 <h1>Usuários</h1>
 
                 <button
-                    onClick={() => navigate("/admin/usuarios/novo")}
+                    onClick={() => navigate("/admin/usuario-form")}
                 >
                     Novo Usuário
                 </button>
@@ -131,7 +131,11 @@ export default function Usuarios() {
 
                                 <button
                                     onClick={() =>
-                                        navigate(`/admin/usuarios/${usuario.id}`)
+                                        navigate("/admin/usuario-form", {
+                                            state: {
+                                                id: usuario.id
+                                            }
+                                        })
                                     }
                                 >
                                     Editar
