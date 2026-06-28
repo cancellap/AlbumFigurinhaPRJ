@@ -8,15 +8,22 @@ export default function Header() {
     const navigate = useNavigate();
 
     const usuario =
-        localStorage.getItem("usuario")
+        localStorage.getItem("nome")
         || "Usuário";
+
+    const perfil =
+        localStorage.getItem("perfil")
+        || "";
 
     function logout() {
 
-        localStorage.removeItem("usuario");
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("nome");
         localStorage.removeItem("perfil");
 
         navigate("/login");
+
     }
 
     const iniciais = usuario
@@ -32,11 +39,11 @@ export default function Header() {
 
             <div className="header-left">
 
-            <img
-                src={logo}
-                alt="FiguMania"
-                className="header-logo"
-            />
+                <img
+                    src={logo}
+                    alt="FiguMania"
+                    className="header-logo"
+                />
 
                 <div className="header-brand">
 
@@ -55,7 +62,7 @@ export default function Header() {
             <div className="header-right">
 
                 <div className="header-xp">
-                    ⭐ Colecionador
+                    ⭐ {perfil || "Usuário"}
                 </div>
 
                 <span className="header-username">
@@ -78,4 +85,5 @@ export default function Header() {
         </header>
 
     );
+
 }
