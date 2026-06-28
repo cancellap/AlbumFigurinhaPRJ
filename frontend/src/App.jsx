@@ -1,8 +1,3 @@
-
-
-
-
-
 import {
   BrowserRouter,
   Routes,
@@ -15,6 +10,7 @@ import About from "./pages/public/About";
 
 import Footer from "./components/Footer";
 import AdminLayout from "./components/AdminLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Usuarios from "./pages/admin/Usuarios";
 import UsuarioForm from "./pages/admin/UsuarioForm";
@@ -23,13 +19,12 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AlbumAutor from "./pages/autor/Album";
 import FigurinhaForm from "./pages/autor/FigurinhaForm";
 import AutorDashboard from "./pages/autor/Dashboard";
+import ConfiguracaoAlbum from "./pages/autor/ConfiguracaoAlbum";
 
 import AlbumColecionador from "./pages/colecionador/Album";
 import NovaFigurinha from "./pages/colecionador/NovaFigurinha";
 import FigurinhaDetalhe from "./pages/colecionador/FigurinhaDetalhe";
 import ColecionadorDashboard from "./pages/colecionador/Dashboard";
-
-import ConfiguracaoAlbum from "./pages/autor/ConfiguracaoAlbum";
 
 function Layout() {
 
@@ -54,109 +49,131 @@ function Layout() {
           element={<About />}
         />
 
-        {/* Admin */}
+        {/* ================= ADMIN ================= */}
 
         <Route
           path="/admin/dashboard"
           element={
-            <AdminLayout perfil="admin">
-              <AdminDashboard />
-            </AdminLayout>
+            <ProtectedRoute perfil="ADMIN">
+              <AdminLayout perfil="admin">
+                <AdminDashboard />
+              </AdminLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/admin/usuarios"
           element={
-            <AdminLayout perfil="admin">
-              <Usuarios />
-            </AdminLayout>
+            <ProtectedRoute perfil="ADMIN">
+              <AdminLayout perfil="admin">
+                <Usuarios />
+              </AdminLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/admin/usuario-form"
           element={
-            <AdminLayout perfil="admin">
-              <UsuarioForm />
-            </AdminLayout>
+            <ProtectedRoute perfil="ADMIN">
+              <AdminLayout perfil="admin">
+                <UsuarioForm />
+              </AdminLayout>
+            </ProtectedRoute>
           }
         />
 
-        {/* Autor */}
+        {/* ================= AUTOR ================= */}
 
         <Route
           path="/autor/dashboard"
           element={
-            <AdminLayout perfil="autor">
-              <AutorDashboard />
-            </AdminLayout>
+            <ProtectedRoute perfil="AUTOR">
+              <AdminLayout perfil="autor">
+                <AutorDashboard />
+              </AdminLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/autor/album"
           element={
-            <AdminLayout perfil="autor">
-              <AlbumAutor />
-            </AdminLayout>
+            <ProtectedRoute perfil="AUTOR">
+              <AdminLayout perfil="autor">
+                <AlbumAutor />
+              </AdminLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/autor/figurinha-form"
           element={
-            <AdminLayout perfil="autor">
-              <FigurinhaForm />
-            </AdminLayout>
+            <ProtectedRoute perfil="AUTOR">
+              <AdminLayout perfil="autor">
+                <FigurinhaForm />
+              </AdminLayout>
+            </ProtectedRoute>
           }
         />
 
-        {/* Colecionador */}
+        <Route
+          path="/autor/configuracao-album"
+          element={
+            <ProtectedRoute perfil="AUTOR">
+              <AdminLayout perfil="autor">
+                <ConfiguracaoAlbum />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ================= COLECIONADOR ================= */}
 
         <Route
           path="/colecionador/dashboard"
           element={
-            <AdminLayout perfil="colecionador">
-              <ColecionadorDashboard />
-            </AdminLayout>
+            <ProtectedRoute perfil="COLECIONADOR">
+              <AdminLayout perfil="colecionador">
+                <ColecionadorDashboard />
+              </AdminLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/colecionador/album"
           element={
-            <AdminLayout perfil="colecionador">
-              <AlbumColecionador />
-            </AdminLayout>
+            <ProtectedRoute perfil="COLECIONADOR">
+              <AdminLayout perfil="colecionador">
+                <AlbumColecionador />
+              </AdminLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/colecionador/nova-figurinha"
           element={
-            <AdminLayout perfil="colecionador">
-              <NovaFigurinha />
-            </AdminLayout>
+            <ProtectedRoute perfil="COLECIONADOR">
+              <AdminLayout perfil="colecionador">
+                <NovaFigurinha />
+              </AdminLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/colecionador/figurinha/:id"
           element={
-            <AdminLayout perfil="colecionador">
-              <FigurinhaDetalhe />
-            </AdminLayout>
+            <ProtectedRoute perfil="COLECIONADOR">
+              <AdminLayout perfil="colecionador">
+                <FigurinhaDetalhe />
+              </AdminLayout>
+            </ProtectedRoute>
           }
-        />
-
-        <Route
-            path="/autor/configuracao-album"
-            element={
-                <AdminLayout perfil="autor">
-                    <ConfiguracaoAlbum />
-                </AdminLayout>
-            }
         />
 
       </Routes>
