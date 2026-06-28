@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/api/stickers";
+const API_URL = "/api/stickers";
 
 function getHeaders() {
     const token = localStorage.getItem("token");
@@ -132,5 +132,28 @@ export async function excluirFigurinha(id) {
 export function fotoFigurinha(id) {
 
     return `${API_URL}/${id}/foto`;
+
+}
+
+export async function carregarFotoFigurinha(id) {
+
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+        `${API_URL}/${id}/foto`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Erro ao carregar imagem.");
+    }
+
+    const blob = await response.blob();
+
+    return URL.createObjectURL(blob);
 
 }

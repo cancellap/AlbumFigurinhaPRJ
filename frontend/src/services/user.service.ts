@@ -1,4 +1,20 @@
-const API_URL = "http://localhost:8080/api/users";
+const API_URL = "/api/users";
+
+function getHeaders(json = false) {
+
+    const token = localStorage.getItem("token");
+
+    const headers: Record<string, string> = {
+        Authorization: `Bearer ${token}`
+    };
+
+    if (json) {
+        headers["Content-Type"] = "application/json";
+    }
+
+    return headers;
+
+}
 
 /* ===========================
    LISTAR
@@ -6,7 +22,9 @@ const API_URL = "http://localhost:8080/api/users";
 
 export async function listarUsuarios() {
 
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, {
+        headers: getHeaders()
+    });
 
     if (!response.ok) {
         throw new Error("Erro ao carregar usuários.");
@@ -23,7 +41,10 @@ export async function listarUsuarios() {
 export async function pesquisarUsuarios(nome: string) {
 
     const response = await fetch(
-        `${API_URL}?nome=${encodeURIComponent(nome)}`
+        `${API_URL}?nome=${encodeURIComponent(nome)}`,
+        {
+            headers: getHeaders()
+        }
     );
 
     if (!response.ok) {
@@ -41,7 +62,10 @@ export async function pesquisarUsuarios(nome: string) {
 export async function buscarUsuario(id: number) {
 
     const response = await fetch(
-        `${API_URL}/${id}`
+        `${API_URL}/${id}`,
+        {
+            headers: getHeaders()
+        }
     );
 
     if (!response.ok) {
@@ -62,9 +86,7 @@ export async function salvarUsuario(usuario: any) {
 
         method: "POST",
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: getHeaders(true),
 
         body: JSON.stringify(usuario)
 
@@ -93,9 +115,7 @@ export async function editarUsuario(
 
             method: "PUT",
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: getHeaders(true),
 
             body: JSON.stringify(usuario)
 
@@ -119,7 +139,8 @@ export async function excluirUsuario(id: number) {
     const response = await fetch(
         `${API_URL}/${id}`,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: getHeaders()
         }
     );
 
@@ -138,7 +159,8 @@ export async function resetarSenha(id: number) {
     const response = await fetch(
         `${API_URL}/${id}/reset-password`,
         {
-            method: "PUT"
+            method: "PUT",
+            headers: getHeaders()
         }
     );
 
