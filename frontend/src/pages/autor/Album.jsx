@@ -7,7 +7,7 @@ import {
     listarFigurinhas,
     pesquisarFigurinhas,
     excluirFigurinha,
-    fotoFigurinha
+    carregarFotoFigurinha
 } from "../../services/sticker.service";
 
 export default function Album() {
@@ -15,6 +15,7 @@ export default function Album() {
     const navigate = useNavigate();
 
     const [figurinhas, setFigurinhas] = useState([]);
+    const [fotos, setFotos] = useState({});
     const [filtro, setFiltro] = useState("");
     const [erro, setErro] = useState("");
     const [carregando, setCarregando] = useState(true);
@@ -28,6 +29,7 @@ export default function Album() {
         try {
 
             const dados = await listarFigurinhas();
+            await carregarFotos(dados);
 
             setFigurinhas(dados);
 
@@ -43,6 +45,29 @@ export default function Album() {
 
     }
 
+    async function carregarFotos(lista) {
+
+    const imagens = {};
+
+    for (const figurinha of lista) {
+
+        try {
+
+            imagens[figurinha.id] =
+                await carregarFotoFigurinha(figurinha.id);
+
+        } catch {
+
+            imagens[figurinha.id] = "";
+
+        }
+
+    }
+
+    setFotos(imagens);
+
+}
+
     async function filtrar() {
 
         if (!filtro.trim()) {
@@ -54,7 +79,7 @@ export default function Album() {
 
             const dados =
                 await pesquisarFigurinhas(filtro);
-
+                await carregarFotos(dados);
             setFigurinhas(dados);
 
         } catch {
@@ -152,7 +177,7 @@ export default function Album() {
                     >
 
                         <img
-                            src={fotoFigurinha(figurinha.id)}
+                            src={fotos[figurinha.id]}
                             alt={figurinha.nome}
                         />
 
