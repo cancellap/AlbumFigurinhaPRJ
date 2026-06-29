@@ -316,26 +316,27 @@ export default function Album() {
 
                 <div className="album-grid">
 
-                    {(paginas[paginaAtual] || [])
-                        .slice(0, 6)
-                        .map(item => (
+                    {Array.from({ length: 6 }, (_, i) => {
+                const item = paginas[paginaAtual]?.[i];
 
-                            <div
-                                className="sticker-slot"
-                                key={item.stickerId}
-                                onClick={() => abrirFigurinha(item)}
-                            >
-
-                            <img
-                                src={fotos[item.stickerId] || figurinhaPadrao}
-                                alt={item.nome}
-                                loading="lazy"
-                            />
-
-                            </div>
-
-                        ))}
-
+                return (
+                    <div
+                        className="sticker-slot"
+                        key={`left-${i}`}
+                        onClick={() => item && abrirFigurinha(item)}
+                    >
+                        <img
+                            src={
+                                item
+                                    ? (fotos[item.stickerId] || figurinhaPadrao)
+                                    : figurinhaPadrao
+                            }
+                            alt={item?.nome || "Figurinha"}
+                            loading="lazy"
+                        />
+                    </div>
+                );
+            })}
                 </div>
 
             </div>
@@ -344,27 +345,29 @@ export default function Album() {
 
                 <div className="album-grid">
 
-                    {(paginas[paginaAtual] || [])
-                        .slice(6, 12)
-                        .map(item => (
+                 {Array.from({ length: 6 }, (_, i) => {
+    const item = paginas[paginaAtual]?.[i + 6];
 
-                        <div
-                            className="sticker-slot"
-                            key={item.stickerId}
-                            onClick={() => abrirFigurinha(item)}
-                        >
-
-                            <img
-                                src={
-                                    item.possui
-                                        ? fotos[item.stickerId]
-                                        : item.imagemPadrao
-                                }
-                                alt={item.nome}
-                            />
-
-                        </div>
-                        ))}
+    return (
+        <div
+            className="sticker-slot"
+            key={`right-${i}`}
+            onClick={() => item && abrirFigurinha(item)}
+        >
+            <img
+                src={
+                    item
+                        ? (item.possui
+                            ? fotos[item.stickerId]
+                            : figurinhaPadrao)
+                        : figurinhaPadrao
+                }
+                alt={item?.nome || "Figurinha"}
+            />
+        </div>
+    );
+})}   
+                  
 
                 </div>
 

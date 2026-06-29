@@ -32,6 +32,11 @@ public class StickerService {
                 .orElseThrow(() -> new RuntimeException("Figurinha não encontrada: " + id));
     }
 
+    public Sticker buscarPorTag(String tag) {
+    return repository.findByTag(tag)
+            .orElseThrow(() -> new RuntimeException("Figurinha não encontrada."));
+    }
+
     public Sticker salvar(Sticker sticker, MultipartFile foto) {
         try {
             if (foto != null && !foto.isEmpty()) {

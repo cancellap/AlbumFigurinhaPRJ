@@ -87,4 +87,10 @@ public class StickerController {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(foto);
     }
+
+    @GetMapping("/tag/{tag}")
+public ResponseEntity<Sticker> buscarPorTag(@PathVariable String tag) {
+    return ResponseEntity.ok(service.buscarPorTag(tag));
+}
+
 }
