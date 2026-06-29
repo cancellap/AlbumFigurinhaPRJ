@@ -1,4 +1,4 @@
-import "../../styles/album.css";
+import "../../styles/album-autor.css";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -126,77 +126,83 @@ export default function Album() {
 
     return (
 
-        <div className="page">
+    <div className="album-autor-page">
 
-            <div className="page-header">
+        <div className="page-header">
 
-                <h1>Figurinhas</h1>
+            <div>
 
-                <button
-                    onClick={() =>
-                        navigate("/autor/figurinha-form")
-                    }
-                >
-                    Nova Figurinha
-                </button>
+                <h1 className="page-title">
+                    Figurinhas
+                </h1>
 
-            </div>
-
-            <div className="toolbar">
-
-                <input
-                    type="text"
-                    placeholder="Pesquisar..."
-                    value={filtro}
-                    onChange={(e) =>
-                        setFiltro(e.target.value)
-                    }
-                />
-
-                <button
-                    onClick={filtrar}
-                >
-                    Pesquisar
-                </button>
+                <p className="page-sub">
+                    Gerencie as figurinhas do seu álbum.
+                </p>
 
             </div>
 
-            {erro && (
+            <button
+                onClick={() =>
+                    navigate("/autor/figurinha-form")
+                }
+            >
+                Nova Figurinha
+            </button>
 
-                <p>{erro}</p>
+        </div>
 
-            )}
+        <div className="toolbar">
 
-            <div className="cards">
+            <input
+                type="text"
+                placeholder="Pesquisar..."
+                value={filtro}
+                onChange={(e) =>
+                    setFiltro(e.target.value)
+                }
+            />
 
-                {figurinhas.map(figurinha => (
+            <button
+                onClick={filtrar}
+            >
+                Pesquisar
+            </button>
+
+        </div>
+
+        {erro && <p>{erro}</p>}
+
+        <div className="cards">
+
+            {figurinhas.map((figurinha) => (
+
+                <div
+                    className="card-figurinha"
+                    key={figurinha.id}
+                >
+
+                    <img
+                        src={fotos[figurinha.id]}
+                        alt={figurinha.nome}
+                    />
 
                     <div
-                        className="card-figurinha"
-                        key={figurinha.id}
+                        style={{
+                            padding: "16px"
+                        }}
                     >
 
-                        <img
-                            src={fotos[figurinha.id]}
-                            alt={figurinha.nome}
-                        />
-
                         <h3>
-
                             #{figurinha.numero}
-
                         </h3>
 
                         <p>
-
                             {figurinha.nome}
-
                         </p>
 
                         <small>
-
                             Página {figurinha.pagina}
-
                         </small>
 
                         <div className="acoes">
@@ -228,12 +234,13 @@ export default function Album() {
 
                     </div>
 
-                ))}
+                </div>
 
-            </div>
+            ))}
 
         </div>
 
-    );
+    </div>
 
+);
 }

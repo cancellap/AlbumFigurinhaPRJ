@@ -1,0 +1,184 @@
+/* =============================================
+   ALBUM-AUTOR.CSS — Página do autor · FigurinhaBase
+   Reescrito no padrão visual dark/ciano do projeto,
+   mantendo a altura de imagem original (340px).
+   ============================================= */
+
+/* ---------- Tokens locais (caso App.css não esteja importado) ---------- */
+.album-autor-page {
+  --bg-base:        #0D1526;
+  --bg-surface:     #131F3A;
+  --bg-nav:         #0B1E4B;
+  --bg-hover:       rgba(255, 255, 255, 0.06);
+
+  --accent:         #00CFFF;
+  --accent-dim:     rgba(0, 207, 255, 0.12);
+  --accent-border:  rgba(0, 207, 255, 0.25);
+
+  --grad-action:    linear-gradient(135deg, #00CFFF, #0055FF);
+
+  --text-primary:   #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.5);
+  --text-muted:     rgba(255, 255, 255, 0.25);
+
+  --border-subtle:  rgba(255, 255, 255, 0.06);
+  --border-soft:    rgba(255, 255, 255, 0.1);
+
+  --color-red:      #FF4D4D;
+
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+
+  --transition: 0.15s ease;
+}
+
+/* ---------- Página ---------- */
+.album-autor-page {
+  padding: 24px;
+  background: var(--bg-base);
+  min-height: 100vh;
+  font-family: var(--font, 'Space Grotesk', system-ui, sans-serif);
+}
+
+/* ---------- Cabeçalho ---------- */
+.album-autor-page .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.album-autor-page .page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+/* ---------- Barra de ferramentas ---------- */
+.album-autor-page .toolbar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Grade de cards ---------- */
+.album-autor-page .cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* ---------- Card de figurinha ---------- */
+.album-autor-page .card-figurinha {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  color: var(--text-primary);
+}
+
+.album-autor-page .card-figurinha:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.5);
+  border-color: var(--accent-border);
+}
+
+/* ---------------------- */
+/* IMAGEM (altura mantida em 340px) */
+/* ---------------------- */
+
+.album-autor-page .imagem {
+  width: 100%;
+  height: 340px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-nav);
+  padding: 12px;
+}
+
+.album-autor-page .imagem img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Caso o JSX ainda não tenha a div .imagem */
+.album-autor-page .card-figurinha img {
+  width: 100%;
+  height: 340px;
+  object-fit: contain;
+  object-position: center;
+  background: var(--bg-nav);
+  padding: 12px;
+  display: block;
+}
+
+/* ---------------------- */
+
+/* ---------- Conteúdo textual ---------- */
+.album-autor-page .conteudo {
+  padding: 18px;
+}
+
+.album-autor-page .card-figurinha h3 {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.album-autor-page .card-figurinha p {
+  margin: 6px 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.album-autor-page .card-figurinha strong {
+  color: var(--text-primary);
+}
+
+/* ---------- Ações (botões) ---------- */
+.album-autor-page .acoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.album-autor-page .acoes button {
+  flex: 1;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  font-family: inherit;
+  transition: opacity var(--transition), background var(--transition);
+}
+
+.album-autor-page .acoes button:first-child {
+  background: var(--grad-action);
+}
+
+.album-autor-page .acoes button:first-child:hover {
+  opacity: 0.88;
+}
+
+.album-autor-page .acoes button:last-child {
+  background: var(--color-red);
+}
+
+.album-autor-page .acoes button:last-child:hover {
+  background: #c43a3a;
+}

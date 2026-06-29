@@ -1,0 +1,240 @@
+.album-view {
+    min-height: 100vh;
+    padding: 40px;
+    background: #e9ecef;
+    display: flex;
+    justify-content: center;
+}
+
+.album-book {
+    width: 1300px;
+    max-width: 100%;
+    background: linear-gradient(
+        135deg,
+        var(--album-bg, #efe7d3) 0%,
+        var(--album-bg-2, #d8c9a3) 100%
+    );
+    color: var(--album-text, #222);
+    font-family: var(--album-font, Georgia, serif);
+    border-radius: 8px;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.30),
+        inset 0 0 60px rgba(255,255,255,.25);
+    overflow: hidden;
+}
+
+.album-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    grid-template-rows:repeat(3,1fr);
+    gap:26px;
+}
+
+.album-header{
+    padding:24px 40px;
+    border-bottom:1px solid var(--album-accent, rgba(0,0,0,.12));
+}
+
+.album-title{
+    font-size:2rem;
+    font-weight:700;
+    color: var(--album-text, #222);
+}
+
+.album-pages{
+    display:flex;
+    min-height:720px;
+    transform-style:preserve-3d;
+    transform-origin:left center;
+}
+
+.album-page{
+    flex:1;
+    padding:32px;
+    background:
+        linear-gradient(to right,
+            rgba(0,0,0,.07),
+            rgba(255,255,255,0) 20%);
+}
+
+.album-page:first-child{
+    border-right:none;
+    box-shadow:
+        inset -20px 0 30px rgba(0,0,0,.10);
+}
+
+.album-page:last-child{
+    box-shadow:
+        inset 20px 0 30px rgba(0,0,0,.10);
+}
+
+.sticker-slot{
+    aspect-ratio:3/4;
+    padding:2px;
+    background:var(--album-page, #fff);
+    border:1px dashed var(--album-accent, rgba(0,0,0,.12));
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+    cursor:pointer;
+    transition:
+        transform .25s,
+        box-shadow .25s;
+
+}
+
+.sticker-slot:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.sticker-slot img{
+    width:97%;
+    height:97%;
+    object-fit:contain;
+    object-position:center;
+    display:block;
+    margin:auto;
+    transition:transform .25s;
+}
+
+.album-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 40px;
+    border-top:1px solid var(--album-accent, rgba(0,0,0,.12));
+}
+
+.page-button{
+    padding:10px 18px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    background: var(--album-accent, #1565C0);
+    color: var(--album-page, #ffffff);
+    font-weight: 600;
+    transition: opacity .2s, transform .2s;
+}
+
+.page-button:hover{
+    opacity:.88;
+}
+
+.page-button:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+}
+
+.album-cover-placeholder{
+    text-align:center;
+    color: var(--album-text, #222);
+    padding:20px;
+}
+
+.album-cover-placeholder h1{
+    font-size:2.4rem;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.album-cover-placeholder p{
+    font-size:1.05rem;
+    opacity:.85;
+    max-width:480px;
+    margin:0 auto;
+}
+
+.album-cover-image{
+
+    width:72%;
+
+    height:88%;
+
+    object-fit:contain;
+
+    border-radius:12px;
+
+    box-shadow:0 18px 40px rgba(0,0,0,.35);
+
+}
+
+.album-cover-image:hover{
+    transform:scale(1.02);
+}
+
+.album-cover{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    height:650px;
+
+    padding:30px;
+}
+
+.album-cover-page{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:24px;
+
+}
+
+.album-pages.turning{
+
+    animation:flipPage .65s ease;
+
+}
+
+@keyframes flipPage{
+
+    0%{
+
+        transform:
+            perspective(1800px)
+            rotateY(0deg);
+
+    }
+
+    45%{
+
+        transform:
+            perspective(1800px)
+            rotateY(-85deg);
+
+    }
+
+    55%{
+
+        opacity:.20;
+
+    }
+
+    100%{
+
+        transform:
+            perspective(1800px)
+            rotateY(0deg);
+
+        opacity:1;
+
+    }
+
+}
+
+.sticker-slot:hover{
+
+    transform:translateY(-4px) scale(1.03);
+
+    box-shadow:
+        0 12px 25px rgba(0,0,0,.22);
+
+}
