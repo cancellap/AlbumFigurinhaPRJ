@@ -157,3 +157,20 @@ export async function carregarFotoFigurinha(id) {
     return URL.createObjectURL(blob);
 
 }
+
+export async function buscarFigurinhaPorTag(tag) {
+
+    const response = await fetch(
+        `${API_URL}/tag/${encodeURIComponent(tag)}`,
+        {
+            headers: getHeaders()
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Tag inválida.");
+    }
+
+    return await response.json();
+
+}

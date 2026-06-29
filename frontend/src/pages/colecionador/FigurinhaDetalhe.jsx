@@ -75,59 +75,99 @@ export default function FigurinhaDetalhe() {
 
     }
 
-    return (
+return (
 
-        <div className="page">
+    <div className="page">
 
-            <h1>Detalhes da Figurinha</h1>
+        <div className="page-header">
 
-            <div className="card-detalhe">
+            <div>
 
-                <img
-                    src={foto}
-                    alt={figurinha.nome}
-                />
+                <div className="page-title">
 
-                <h2>
+                    Detalhes da Figurinha
 
-                    #{figurinha.numero} - {figurinha.nome}
+                </div>
 
-                </h2>
+                <div className="page-sub">
 
-                <p>
+                    Informações completas da figurinha.
 
-                    <strong>Página:</strong> {figurinha.pagina}
-
-                </p>
-
-                <p>
-
-                    <strong>Descrição:</strong>
-
-                </p>
-
-                <p>
-
-                    {figurinha.descricao || "Sem descrição."}
-
-                </p>
-
-                <p>
-
-                    <strong>Tag MD5:</strong>
-
-                </p>
-
-                <p>
-
-                    {figurinha.tag}
-
-                </p>
+                </div>
 
             </div>
 
         </div>
 
-    );
+        <div className="detalhe-container">
+
+            <div className="detalhe-card">
+
+                <div className="detalhe-imagem">
+
+                    <img
+                        src={foto}
+                        alt={figurinha.nome}
+                    />
+
+                </div>
+
+                <div className="detalhe-info">
+
+                    <h1>
+
+                        {figurinha.nome}
+
+                    </h1>
+
+                    <div className="detalhe-badges">
+
+                        <span>
+
+                            Nº {figurinha.numero}
+
+                        </span>
+
+                        <span>
+
+                            Página {figurinha.pagina}
+
+                        </span>
+
+                    </div>
+
+                    <div className="detalhe-descricao">
+
+                        <h3>Descrição</h3>
+
+                        <p>
+
+                            {figurinha.descricao || "Sem descrição."}
+
+                        </p>
+
+                    </div>
+
+                    <div className="detalhe-tag">
+
+                        <label>TAG MD5</label>
+
+                        <input
+                            type="text"
+                            value={figurinha.tag}
+                            readOnly
+                        />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+);
 
 }

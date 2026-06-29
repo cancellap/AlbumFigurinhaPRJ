@@ -1,10 +1,10 @@
 import "../../styles/album.css";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
-    listarFigurinhas,
+    buscarFigurinhaPorTag,
     carregarFotoFigurinha
 } from "../../services/sticker.service";
 
@@ -17,92 +17,64 @@ export default function NovaFigurinha() {
 
     const navigate = useNavigate();
 
-    const [figurinhas, setFigurinhas] = useState([]);
-    const [fotos, setFotos] = useState({});
-    const [carregando, setCarregando] = useState(true);
+    const [tag, setTag] = useState("");
+    const [figurinha, setFigurinha] = useState(null);
+    const [foto, setFoto] = useState("");
     const [erro, setErro] = useState("");
+    const [buscando, setBuscando] = useState(false);
 
-    useEffect(() => {
-        carregarFigurinhas();
-    }, []);
+    async function pesquisar() {
 
-    async function carregarFigurinhas() {
+        if (!tag.trim()) {
+            alert("Informe a TAG.");
+            return;
+        }
 
         try {
 
-            const dados = await listarFigurinhas();
+            setBuscando(true);
+            setErro("");
 
-            const lista = await Promise.all(
+            const dados =
+                await buscarFigurinhaPorTag(tag.trim());
 
-                dados.map(async (figurinha) => {
+            const jaPossui =
+                await possuiFigurinha(dados.id);
 
-                    let possui = false;
+            dados.possui = jaPossui;
 
-                    try {
+            const imagem =
+                await carregarFotoFigurinha(dados.id);
 
-                        possui = await possuiFigurinha(figurinha.id);
+            setFoto(imagem);
+            setFigurinha(dados);
 
-                    } catch {
+        } catch (e) {
 
-                        possui = false;
-
-                    }
-
-                    return {
-                        ...figurinha,
-                        possui
-                    };
-
-                })
-
-            );
-
-            await carregarFotos(lista);
-
-            setFigurinhas(lista);
-
-        } catch {
-
-            setErro("Erro ao carregar figurinhas.");
+            setFigurinha(null);
+            setFoto("");
+            setErro(e.message);
 
         } finally {
 
-            setCarregando(false);
+            setBuscando(false);
 
         }
 
     }
 
-    async function carregarFotos(lista) {
+    async function inserir() {
 
-    const imagens = {};
-
-    for (const figurinha of lista) {
-
-        try {
-
-            imagens[figurinha.id] =
-                await carregarFotoFigurinha(figurinha.id);
-
-        } catch {
-
-            imagens[figurinha.id] = "";
-
-        }
-
-    }
-
-    setFotos(imagens);
-
-}
-
-    async function adicionar(id) {
+        if (!figurinha)
+            return;
 
         try {
 
-            await adicionarFigurinha(id);
+            await adicionarFigurinha(figurinha.id);
 
-            carregarFigurinhas();
+            alert("Figurinha adicionada ao álbum.");
+
+            navigate("/colecionador/album");
 
         } catch (e) {
 
@@ -112,126 +84,161 @@ export default function NovaFigurinha() {
 
     }
 
-    if (carregando) {
+return (
 
-        return (
+    <div className="page">
 
-            <div className="page">
+        <div className="page-header">
 
-                <h2>Carregando...</h2>
+            <div>
 
-            </div>
+                <div className="page-title">
 
-        );
-
-    }
-
-    return (
-
-        <div className="page">
-
-            <div className="page-header">
-
-                <div>
-
-                    <h1>Adicionar Figurinha</h1>
-
-                    <div className="page-sub">
-
-                        Escolha uma figurinha para adicionar ao seu álbum.
-
-                    </div>
+                    Adicionar Figurinha
 
                 </div>
 
-                <button
-                    onClick={() =>
-                        navigate("/colecionador/album")
-                    }
-                >
-                    Voltar
-                </button>
+                <div className="page-sub">
+
+                    Digite a TAG MD5 para localizar a figurinha.
+
+                </div>
 
             </div>
 
-            {erro && (
+            <button
+                className="page-button"
+                onClick={() => navigate("/colecionador/album")}
+            >
+                Voltar
+            </button>
 
-                <p>{erro}</p>
+        </div>
 
-            )}
+        <div className="nova-figurinha">
 
-            <div className="cards">
+            <div className="nova-card">
 
-                {figurinhas.map(figurinha => (
+                <div className="nova-form">
 
-                    <div
-                        key={figurinha.id}
-                        className="card-figurinha"
-                    >
-
-                    <img
-                        src={fotos[figurinha.id]}
-                        alt={figurinha.nome}
+                    <input
+                        type="text"
+                        value={tag}
+                        placeholder="Digite a TAG MD5"
+                        onChange={e => setTag(e.target.value)}
                     />
 
-                        <h3>
+                    <button
+                        className="page-button"
+                        onClick={pesquisar}
+                        disabled={buscando}
+                    >
+                        Buscar
+                    </button>
 
-                            #{figurinha.numero}
+                </div>
 
-                        </h3>
+                {erro && (
 
-                        <p>
+                    <div className="erro-tag">
 
-                            {figurinha.nome}
-
-                        </p>
-
-                        <small>
-
-                            Página {figurinha.pagina}
-
-                        </small>
-
-                        {
-
-                            figurinha.possui
-
-                                ? (
-
-                                    <button
-                                        disabled
-                                    >
-
-                                        Já possui
-
-                                    </button>
-
-                                )
-
-                                : (
-
-                                    <button
-                                        onClick={() =>
-                                            adicionar(figurinha.id)
-                                        }
-                                    >
-
-                                        Adicionar
-
-                                    </button>
-
-                                )
-
-                        }
+                        {erro}
 
                     </div>
 
-                ))}
+                )}
+
+                {
+
+                    figurinha && (
+
+                        <div className="nova-resultado">
+
+                            <div className="nova-imagem">
+
+                                <img
+                                    src={foto}
+                                    alt={figurinha.nome}
+                                />
+
+                            </div>
+
+                            <div className="nova-info">
+
+                                <h2>
+
+                                    {figurinha.nome}
+
+                                </h2>
+
+                                <p>
+
+                                    <strong>Número:</strong> {figurinha.numero}
+
+                                </p>
+
+                                <p>
+
+                                    <strong>Página:</strong> {figurinha.pagina}
+
+                                </p>
+
+                                <p>
+
+                                    {figurinha.descricao}
+
+                                </p>
+
+                                <div className="nova-acoes">
+
+                                    {
+
+                                        figurinha.possui
+
+                                            ? (
+
+                                                <button
+                                                    className="page-button"
+                                                    disabled
+                                                >
+
+                                                    Já possui
+
+                                                </button>
+
+                                            )
+
+                                            : (
+
+                                                <button
+                                                    className="page-button"
+                                                    onClick={inserir}
+                                                >
+
+                                                    Inserir Figurinha
+
+                                                </button>
+
+                                            )
+
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    )
+
+                }
 
             </div>
 
         </div>
 
-    );
+    </div>
+
+);
 
 }
