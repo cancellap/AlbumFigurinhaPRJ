@@ -1,24 +1,101 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "../../styles/album.css";
 
-import { albuns } from "../../data/albuns";
+import {
+    buscarConfiguracao,
+    salvarConfiguracao
+} from "../../services/album.service";
 
 export default function ConfiguracaoAlbum() {
 
-    const [album, setAlbum] =
-        useState(albuns[0]);
+    const FONTES = [
+
+        "Oswald",
+
+        "Bebas Neue",
+
+        "Montserrat",
+
+        "Roboto",
+
+        "Lato",
+
+        "Poppins",
+
+        "Playfair Display"
+
+    ];
+
+    const [album, setAlbum] = useState({
+
+        nomeAlbum: "",
+
+        descricao: "",
+
+        corPrimaria: "#1565C0",
+
+        corSecundaria: "#FFD600",
+
+        fonte: "Oswald",
+
+        mostrarNumero: true,
+
+        mostrarDescricao: false
+
+    });
+
+    useEffect(() => {
+
+        carregar();
+
+    }, []);
+
+    async function carregar() {
+
+        const dados =
+            await buscarConfiguracao();
+
+        setAlbum(dados);
+
+    }
 
     function alterarCampo(e) {
 
-        const { name, value } = e.target;
+        const {
+
+            name,
+
+            value,
+
+            type,
+
+            checked
+
+        } = e.target;
 
         setAlbum({
+
             ...album,
-            [name]: value
+
+            [name]:
+                type === "checkbox"
+                    ? checked
+                    : value
+
         });
+
     }
 
+    async function salvar(e) {
+
+        e.preventDefault();
+
+        await salvarConfiguracao(album);
+
+        alert("Configuração salva.");
+
+    }
     return (
 
         <div className="page">
@@ -47,7 +124,10 @@ export default function ConfiguracaoAlbum() {
                 }}
             >
 
-                <form className="form">
+                <form
+                    className="form"
+                    onSubmit={salvar}
+                >
 
                     <div>
 
@@ -57,8 +137,8 @@ export default function ConfiguracaoAlbum() {
 
                         <input
                             type="text"
-                            name="nome"
-                            value={album.nome}
+                            name="nomeAlbum"
+                            value={album.nomeAlbum}
                             onChange={alterarCampo}
                         />
 
@@ -79,20 +159,6 @@ export default function ConfiguracaoAlbum() {
 
                     </div>
 
-                    <div>
-
-                        <label className="form-label">
-                            Total de Páginas
-                        </label>
-
-                        <input
-                            type="number"
-                            name="totalPaginas"
-                            value={album.totalPaginas}
-                            onChange={alterarCampo}
-                        />
-
-                    </div>
 
                     <div>
 
@@ -127,17 +193,84 @@ export default function ConfiguracaoAlbum() {
                     <div>
 
                         <label className="form-label">
-                            URL da Capa
+                            Fonte
                         </label>
 
+                        <select
+                            name="fonte"
+                            value={album.fonte}
+                            onChange={alterarCampo}
+                        >
+
+                            {FONTES.map(fonte => (
+
+                                <option
+                                    key={fonte}
+                                    value={fonte}
+                                >
+                                    {fonte}
+                                </option>
+
+                            ))}
+
+                        </select>
+
+                    </div>
+
+                    <div
+                        style={{
+                            marginTop:20,
+                            padding:20,
+                            border:"1px solid #DDD",
+                            borderRadius:8,
+                            fontFamily:album.fonte
+                        }}
+                    >
+
+                        <h2>
+                            FIGUMANIA
+                        </h2>
+
+                        <p>
+                            Álbum Oficial
+                        </p>
+
+                    </div>
+
+                    <label>
+
                         <input
-                            type="text"
-                            name="capa"
-                            value={album.capa}
+                            type="checkbox"
+                            name="mostrarNumero"
+                            checked={album.mostrarNumero}
                             onChange={alterarCampo}
                         />
 
-                    </div>
+                        Mostrar número
+
+                    </label>
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="mostrarDescricao"
+                            checked={album.mostrarDescricao}
+                            onChange={alterarCampo}
+                        />
+
+                        Mostrar descrição
+
+                    </label>
+
+                    <button
+                        className="btn-primary"
+                        type="submit"
+                    >
+
+                        Salvar
+
+                    </button>
 
                 </form>
 
@@ -149,10 +282,20 @@ export default function ConfiguracaoAlbum() {
                     }}
                 >
 
-                    <img
-                        src={album.capa}
-                        alt={album.nome}
-                    />
+                <div
+                    style={{
+                        height: 250,
+                        background: "#F2F2F2",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderBottom: "1px solid #DDD",
+                        fontSize: 24,
+                        color: "#666"
+                    }}
+                >
+                    CAPA DO ÁLBUM
+                </div>
 
                     <div className="card-detalhe-body">
 
@@ -163,7 +306,7 @@ export default function ConfiguracaoAlbum() {
                                     album.corPrimaria
                             }}
                         >
-                            {album.nome}
+                            {album.nomeAlbum}
                         </div>
 
                         <div className="card-detalhe-sub">
@@ -173,15 +316,27 @@ export default function ConfiguracaoAlbum() {
                         <div
                             className="detalhes"
                         >
-
                             <div className="item">
-                                📖 {album.totalPaginas} páginas
+
+                                Fonte:
+                                {album.fonte}
+
                             </div>
 
                             <div className="item">
-                                🖼 {album.totalFigurinhas} figurinhas
+
+                                Cor Primária:
+                                {album.corPrimaria}
+
                             </div>
 
+                            <div className="item">
+
+                                Cor Secundária:
+                                {album.corSecundaria}
+
+                            </div>
+                            
                         </div>
 
                     </div>

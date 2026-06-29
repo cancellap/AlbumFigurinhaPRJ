@@ -26,15 +26,26 @@ public class AlbumConfig {
 
     private boolean mostrarDescricao;
 
+    // NOVOS CAMPOS
+    private String capa;
+
+    private String contraCapa;
+
     public AlbumConfig() {
 
         nomeAlbum = "Meu Álbum";
         descricao = "";
+
         corPrimaria = "#1565C0";
         corSecundaria = "#FFD600";
+
         fonte = "Oswald";
+
         mostrarNumero = true;
         mostrarDescricao = false;
+
+        capa = "";
+        contraCapa = "";
 
     }
 
@@ -142,6 +153,22 @@ public class AlbumConfig {
 
     public void setMostrarDescricao(boolean mostrarDescricao) {
         this.mostrarDescricao = mostrarDescricao;
+    }
+
+    public String getCapa() {
+        return capa;
+    }
+
+    public void setCapa(String capa) {
+        this.capa = capa;
+    }
+
+    public String getContraCapa() {
+        return contraCapa;
+    }
+
+    public void setContraCapa(String contraCapa) {
+        this.contraCapa = contraCapa;
     }
 
 }
