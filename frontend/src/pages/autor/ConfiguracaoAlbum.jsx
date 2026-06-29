@@ -41,7 +41,11 @@ export default function ConfiguracaoAlbum() {
 
         mostrarNumero: true,
 
-        mostrarDescricao: false
+        mostrarDescricao: false,
+
+        capa: "",
+
+        contraCapa: ""
 
     });
 
@@ -84,6 +88,30 @@ export default function ConfiguracaoAlbum() {
                     : value
 
         });
+
+    }
+
+    function carregarImagem(e, campo) {
+
+        const arquivo = e.target.files[0];
+
+        if (!arquivo) return;
+
+        const reader = new FileReader();
+
+        reader.onload = () => {
+
+            setAlbum({
+
+                ...album,
+
+                [campo]: reader.result
+
+            });
+
+        };
+
+        reader.readAsDataURL(arquivo);
 
     }
 
@@ -262,6 +290,48 @@ export default function ConfiguracaoAlbum() {
                         Mostrar descrição
 
                     </label>
+                    <hr style={{ margin: "25px 0" }} />
+
+                        <div>
+
+                            <label className="form-label">
+
+                                Imagem da Capa
+
+                            </label>
+
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) =>
+                                    carregarImagem(e, "capa")
+                                }
+                            />
+
+                        </div>
+
+                        <br />
+
+                        <div>
+
+                            <label className="form-label">
+
+                                Imagem da Contracapa
+
+                            </label>
+
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) =>
+                                    carregarImagem(e, "contraCapa")
+                                }
+                            />
+
+                        </div>
+
+
+
 
                     <button
                         className="btn-primary"
@@ -285,17 +355,53 @@ export default function ConfiguracaoAlbum() {
                 <div
                     style={{
                         height: 250,
-                        background: "#F2F2F2",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderBottom: "1px solid #DDD",
-                        fontSize: 24,
-                        color: "#666"
+                        overflow: "hidden",
+                        borderBottom: "1px solid #DDD"
                     }}
                 >
-                    CAPA DO ÁLBUM
+
+                    {album.capa ? (
+
+                        <img
+
+                            src={album.capa}
+
+                            alt="Capa"
+
+                            style={{
+
+                                width: "100%",
+
+                                height: "100%",
+
+                                objectFit: "cover"
+
+                            }}
+
+                        />
+
+                    ) : (
+
+                        <div
+                            style={{
+                                height: "100%",
+                                background: "#F2F2F2",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                color: "#777",
+                                fontSize: 24
+                            }}
+                        >
+
+                            CAPA DO ÁLBUM
+
+                        </div>
+
+                    )}
+
                 </div>
+   
 
                     <div className="card-detalhe-body">
 
