@@ -1,0 +1,9 @@
+{
+  "nomeAlbum" : "Meu Álbum",
+  "descricao" : "",
+  "corPrimaria" : "#1565C0",
+  "corSecundaria" : "#FFD600",
+  "fonte" : "Oswald",
+  "mostrarNumero" : true,
+  "mostrarDescricao" : false
+}
