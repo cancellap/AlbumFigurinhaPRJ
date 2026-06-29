@@ -3,7 +3,7 @@ import "../../styles/album.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { fotoFigurinha } from "../../services/sticker.service";
+import { carregarFotoFigurinha } from "../../services/sticker.service";
 
 import {
     listarMinhaColecao,
@@ -15,6 +15,7 @@ export default function Album() {
     const navigate = useNavigate();
 
     const [colecao, setColecao] = useState([]);
+    const [fotos, setFotos] = useState({});
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
 
@@ -31,6 +32,8 @@ export default function Album() {
             const dados =
                 await listarMinhaColecao();
 
+            await carregarFotos(dados);
+
             setColecao(dados);
 
         } catch {
@@ -42,6 +45,29 @@ export default function Album() {
             setCarregando(false);
 
         }
+
+    }
+
+    async function carregarFotos(lista) {
+
+        const imagens = {};
+
+        for (const item of lista) {
+
+            try {
+
+                imagens[item.stickerId] =
+                    await carregarFotoFigurinha(item.stickerId);
+
+            } catch {
+
+                imagens[item.stickerId] = "";
+
+            }
+
+        }
+
+        setFotos(imagens);
 
     }
 
@@ -123,7 +149,7 @@ export default function Album() {
                     >
 
                         <img
-                            src={fotoFigurinha(item.stickerId)}
+                            src={fotos[item.stickerId]}
                             alt={item.nome}
                         />
 

@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 import {
     buscarFigurinha,
-    fotoFigurinha
+    carregarFotoFigurinha
 } from "../../services/sticker.service";
 
 export default function FigurinhaDetalhe() {
@@ -13,6 +13,7 @@ export default function FigurinhaDetalhe() {
     const { id } = useParams();
 
     const [figurinha, setFigurinha] = useState(null);
+    const [foto, setFoto] = useState("");
     const [erro, setErro] = useState("");
 
     useEffect(() => {
@@ -29,9 +30,22 @@ export default function FigurinhaDetalhe() {
 
         try {
 
-            const dados = await buscarFigurinha(id);
+                const dados = await buscarFigurinha(id);
 
-            setFigurinha(dados);
+                setFigurinha(dados);
+
+                try {
+
+                    const imagem =
+                        await carregarFotoFigurinha(dados.id);
+
+                    setFoto(imagem);
+
+                } catch {
+
+                    setFoto("");
+
+                }
 
         } catch {
 
@@ -70,7 +84,7 @@ export default function FigurinhaDetalhe() {
             <div className="card-detalhe">
 
                 <img
-                    src={fotoFigurinha(figurinha.id)}
+                    src={foto}
                     alt={figurinha.nome}
                 />
 

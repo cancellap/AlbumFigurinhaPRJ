@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import {
     listarFigurinhas,
-    fotoFigurinha
+    carregarFotoFigurinha
 } from "../../services/sticker.service";
 
 import {
@@ -18,6 +18,7 @@ export default function NovaFigurinha() {
     const navigate = useNavigate();
 
     const [figurinhas, setFigurinhas] = useState([]);
+    const [fotos, setFotos] = useState({});
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
 
@@ -56,6 +57,8 @@ export default function NovaFigurinha() {
 
             );
 
+            await carregarFotos(lista);
+
             setFigurinhas(lista);
 
         } catch {
@@ -69,6 +72,29 @@ export default function NovaFigurinha() {
         }
 
     }
+
+    async function carregarFotos(lista) {
+
+    const imagens = {};
+
+    for (const figurinha of lista) {
+
+        try {
+
+            imagens[figurinha.id] =
+                await carregarFotoFigurinha(figurinha.id);
+
+        } catch {
+
+            imagens[figurinha.id] = "";
+
+        }
+
+    }
+
+    setFotos(imagens);
+
+}
 
     async function adicionar(id) {
 
@@ -143,10 +169,10 @@ export default function NovaFigurinha() {
                         className="card-figurinha"
                     >
 
-                        <img
-                            src={fotoFigurinha(figurinha.id)}
-                            alt={figurinha.nome}
-                        />
+                    <img
+                        src={fotos[figurinha.id]}
+                        alt={figurinha.nome}
+                    />
 
                         <h3>
 
