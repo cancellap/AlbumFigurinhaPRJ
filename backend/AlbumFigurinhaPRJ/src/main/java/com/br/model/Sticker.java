@@ -1,10 +1,12 @@
 package com.br.model;
 
+import java.io.Serializable;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "stickers")
-public class Sticker {
+public class Sticker implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -34,9 +34,13 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             // Figurinhas
             .requestMatchers("/api/stickers/**")
                 .hasAnyRole("AUTOR", "COLECIONADOR", "ADMIN")
+                
+            //Export
+            .requestMatchers("/api/export/**").hasAnyRole("AUTOR", "ADMIN")
 
             // Todas as demais
             .anyRequest().authenticated()
+            
 
         )
         .addFilterBefore(
