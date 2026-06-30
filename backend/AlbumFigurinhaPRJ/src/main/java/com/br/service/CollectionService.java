@@ -4,6 +4,7 @@ import com.br.model.Collection;
 import com.br.model.CollectionResponse;
 import com.br.model.Sticker;
 import com.br.model.User;
+import com.br.utils.AuditLogUtil;
 import com.br.repository.CollectionRepository;
 import com.br.repository.StickerRepository;
 import com.br.repository.UserRepository;
@@ -62,11 +63,11 @@ public class CollectionService {
         Collection collection = new Collection();
         collection.setUser(user);
         collection.setSticker(sticker);
-
-        return new CollectionResponse(collectionRepository.save(collection));
+        CollectionResponse resp = new CollectionResponse(collectionRepository.save(collection));
+        AuditLogUtil.log(user.getNome(), "ADICIONOU_FIGURINHA: #" + sticker.getNumero() + " " + sticker.getNome());
+        return resp;
     }
 
-    // remove figurinha da coleção
     public void remover(Long userId, Long stickerId) {
         User user = buscarUsuario(userId);
         Sticker sticker = buscarFigurinha(stickerId);
@@ -76,6 +77,7 @@ public class CollectionService {
                 .orElseThrow(() -> new RuntimeException("Figurinha não está na coleção"));
 
         collectionRepository.delete(collection);
+        AuditLogUtil.log(user.getNome(), "REMOVEU_FIGURINHA: #" + sticker.getNumero() + " " + sticker.getNome());
     }
 
     // verifica se usuário tem a figurinha

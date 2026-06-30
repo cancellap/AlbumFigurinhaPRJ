@@ -2,6 +2,7 @@ package com.br.service;
 
 import com.br.model.Profile;
 import com.br.model.User;
+import com.br.utils.*;
 import com.br.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,9 @@ public class UserService {
     }
 
     public User salvar(User user) {
-        return repository.save(user);
+        User salvo = repository.save(user);
+        AuditLogUtil.log("ADMIN", "CRIOU_USUARIO: " + user.getNome() + " [" + user.getPerfil() + "]");
+        return salvo;
     }
 
     public User editar(Long id, User dados) {
@@ -40,17 +43,22 @@ public class UserService {
         user.setNome(dados.getNome());
         user.setSenha(dados.getSenha());
         user.setPerfil(dados.getPerfil());
-        return repository.save(user);
+        User salvo = repository.save(user);
+        AuditLogUtil.log("ADMIN", "EDITOU_USUARIO: " + user.getNome());
+        return salvo;
     }
 
     public void deletar(Long id) {
-        buscarPorId(id);
+        User user = buscarPorId(id);
         repository.deleteById(id);
+        AuditLogUtil.log("ADMIN", "REMOVEU_USUARIO: " + user.getNome());
     }
 
     public User resetarSenha(Long id) {
         User user = buscarPorId(id);
         user.setSenha("123456");
-        return repository.save(user);
+        User salvo = repository.save(user);
+        AuditLogUtil.log("ADMIN", "RESETOU_SENHA: " + user.getNome());
+        return salvo;
     }
 }

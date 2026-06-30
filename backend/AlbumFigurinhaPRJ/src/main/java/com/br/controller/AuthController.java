@@ -25,4 +25,16 @@ public class AuthController {
             return ResponseEntity.status(401).body(e.getMessage());
         }
     }
+    
+    @GetMapping("/audit-log")
+    public ResponseEntity<String> lerLog() {
+        try {
+            String conteudo = new String(
+                java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("logs/audit.log"))
+            );
+            return ResponseEntity.ok(conteudo);
+        } catch (Exception e) {
+            return ResponseEntity.ok("Nenhum log encontrado.");
+        }
+    }
 }

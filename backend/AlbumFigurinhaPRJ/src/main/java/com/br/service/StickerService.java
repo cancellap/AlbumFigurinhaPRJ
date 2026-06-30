@@ -2,7 +2,7 @@ package com.br.service;
 
 import com.br.model.Sticker;
 import com.br.repository.StickerRepository;
-import com.br.utils.Md5Util;
+import com.br.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,9 +42,11 @@ public class StickerService {
             if (foto != null && !foto.isEmpty()) {
                 byte[] bytes = foto.getBytes();
                 sticker.setFoto(bytes);
-                sticker.setTag(Md5Util.calcular(bytes)); // calcula MD5 automaticamente
+                sticker.setTag(Md5Util.calcular(bytes));
             }
-            return repository.save(sticker);
+            Sticker salvo = repository.save(sticker);
+            AuditLogUtil.log("AUTOR", "CRIOU_FIGURINHA: #" + sticker.getNumero() + " " + sticker.getNome());
+            return salvo;
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar figurinha", e);
         }
@@ -66,12 +68,15 @@ public class StickerService {
                 throw new RuntimeException("Erro ao processar imagem", e);
             }
         }
-        return repository.save(sticker);
+        Sticker salvo = repository.save(sticker);
+        AuditLogUtil.log("AUTOR", "EDITOU_FIGURINHA: #" + sticker.getNumero() + " " + sticker.getNome());
+        return salvo;
     }
 
     public void deletar(Long id) {
-        buscarPorId(id);
+        Sticker sticker = buscarPorId(id);
         repository.deleteById(id);
+        AuditLogUtil.log("AUTOR", "REMOVEU_FIGURINHA: #" + sticker.getNumero() + " " + sticker.getNome());
     }
 
     public byte[] buscarFoto(Long id) {
